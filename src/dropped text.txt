@@ -1,0 +1,1 @@
+/home/robin/projects/private/blancer/blancer/src/routes/+page.svelte
