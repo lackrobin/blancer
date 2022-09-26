@@ -1,10 +1,10 @@
 <script>
 	import Header from "../components/Header.svelte";
-    import { user } from "../stores";
+    import { username } from "../stores";
     import "../app.css";
     export let data
-
-    user.set(data.user)
+    console.log(data)
+    username.set(data.username)
 
 </script>
   

@@ -1,6 +1,17 @@
 <script>
 	import { page } from '$app/stores';
-	import { user } from "../stores";
+	import { onMount } from 'svelte';
+	import { username } from "../stores";
+
+	let logoutForm
+
+
+	function resetUsernameStore(e){
+		console.log(e)
+		username.set("anon")
+		logoutForm.submit()
+	}
+
 	
 	let title = '₿lancer';
 </script>
@@ -35,23 +46,25 @@
 					class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
 				>
 					<li>
-						<a sveltekit:prefetch class={$page.url.pathname === '/' ? 'text-teal-700' : ''} href="/"
+						<a sveltekit:prefetch 
+						class={$page.url.pathname === '/' ? 'link-primary' : ''}
+						 href="/"
 							>Home</a
 						>
 					</li>
-					{#if user}
+					{#if $username !== "anon"}
 					<li>
 						<a
 							sveltekit:prefetch
-							class={$page.url.pathname.includes('new') ? 'text-teal-700' : ''}
-							href="/add/proposal">+Add new Listing</a
+							class={$page.url.pathname.includes('createnewlisting') ? 'link-primary' : ''}
+							href="/createnewlisting">+ Create new Listing</a
 						>
 					</li>
 				{/if}
 					<li>
 						<a
 							sveltekit:prefetch
-							class={$page.url.pathname.includes('about') ? 'text-teal-700' : ''}
+							class={$page.url.pathname.includes('about') ? 'link-primary' : ''}
 							href="/about">About</a
 						>
 					</li>
@@ -61,18 +74,21 @@
 		</div>
 		<div class="navbar-center items-center">
 
-			<a class="pl-1 btn btn-ghost normal-case text-xl hover:text-[#ff7f2a]" href="/">
+			<a class=" btn btn-ghost normal-case text-xl hover:text-[#ff7f2a]" href="/">
 		
 				{title}
 			</a>
 		</div>
 		<div class="navbar-end">
-			{#if $user}
+			{#if $username !== "anon"}
 				<div class="flex gap-2">
-					<a href="/user">{$user}</a>
-					<form action="/logout" method="post">
-					<input type="submit" value="logout" class="btn btn-ghost normal-case hover:text-[#ff7f2a]">
+					<a href="/user">{$username}</a>
+					<form action="/logout" method="post" name="logoutForm" id="logoutForm" bind:this={logoutForm}>
+						<input type="hidden" name="logout">
 					</form>
+					<button on:click={resetUsernameStore} class="btn btn-ghost normal-case hover:text-[#ff7f2a]">
+						logout
+						</button>
 					<!-- <a href="/logout" class="link link-primary">logout</a> -->
 				</div>
 			{:else}

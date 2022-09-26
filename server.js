@@ -4,7 +4,7 @@ import express from 'express';
 import LnurlAuth from "passport-lnurl-auth"
 import passport from 'passport'
 import session from 'express-session';
-import {createUserIfNotExist} from "./backend.js"
+import {createUserIfNotExist, setUsername ,getUsernameByPubkey} from "./backend.js"
 
 
 const app = express();
@@ -32,6 +32,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const map = {
 	user: new Map(),
 };
@@ -56,11 +60,15 @@ passport.use(new LnurlAuth.Strategy(function(linkingPublicKey, done) {
 app.use(passport.authenticate('lnurl-auth'));
 
 
-app.get('/login',
-	function(req, res, next) {
+app.get('/login', 
+	 async (req, res, next) => {
 		if (req.user) {
-			createUserIfNotExist(req.user)
-			// Already authenticated.
+			const userExisted = await createUserIfNotExist(req.user)
+			console.log(userExisted)
+			if (!userExisted){
+				return res.redirect('/user/setusername')
+			}
+			// user already existed. Logging in normaly
 			return res.redirect('/');
 		}
 		next();
@@ -80,6 +88,20 @@ function (req, res, next) {
     else{
         res.send({user: null})
     }
+})
+
+app.get("/username", async (req, res, next) => {
+	if (req.user) {
+		res.send({username : await getUsernameByPubkey(req.user.id)})
+	}
+	else{
+		res.send({username :"anon"})
+	}
+})
+
+app.post('/setusername', function(req, res, next){
+	setUsername(req.user.id, req.body.username)
+	res.redirect("/")
 })
 
 app.post('/logout',	 function(req, res, next){
