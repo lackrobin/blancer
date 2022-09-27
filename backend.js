@@ -25,6 +25,20 @@ export async function createUserIfNotExist(user) {
   return true
 }
 
+export async function createListing(userid, listingData) {
+      const data = {
+        creator: Select('ref', Get(Match(Index("users_by_pubkey"), userid))),
+        type: listingData.type,
+        title: listingData.title,
+        description: listingData.description,
+        tags: listingData.tags,
+        price: listingData.price
+      }
+      const doc = await db.query(
+      Create(Collection('listing'), {data}))
+return doc
+}
+
 export async function setUsername(user, username) {
   const doc = await db.query(
     Update(

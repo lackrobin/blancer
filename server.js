@@ -4,7 +4,7 @@ import express from 'express';
 import LnurlAuth from "passport-lnurl-auth"
 import passport from 'passport'
 import session from 'express-session';
-import {createUserIfNotExist, setUsername ,getUsernameByPubkey} from "./backend.js"
+import {createUserIfNotExist, setUsername ,getUsernameByPubkey, createListing} from "./backend.js"
 
 
 const app = express();
@@ -33,7 +33,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.use(express.json());
+app.use(express.json({type: ['application/json', 'text/plain']}));
 app.use(express.urlencoded({ extended: true }));
 
 const map = {
@@ -74,7 +74,7 @@ app.get('/login',
 		next();
 	},
 	new LnurlAuth.Middleware({
-		callbackUrl: "https://faea-182-218-133-97.jp.ngrok.io" + '/login',
+		callbackUrl: "https://a08b-182-218-133-97.jp.ngrok.io" + '/login',
         loginTemplateFilePath: './login-template.html',
 		cancelUrl: config.url
 	})
@@ -103,6 +103,13 @@ app.post('/setusername', function(req, res, next){
 	setUsername(req.user.id, req.body.username)
 	res.redirect("/")
 })
+
+
+app.post('/createlisting', async (req, res, next) => {
+	const doc = await createListing(req.user.id, req.body.data)
+	res.send(doc.ref)
+})
+
 
 app.post('/logout',	 function(req, res, next){
 	req.logout(function(err) {

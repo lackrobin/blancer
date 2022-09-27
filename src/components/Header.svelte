@@ -46,7 +46,7 @@
 					class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
 				>
 					<li>
-						<a sveltekit:prefetch 
+						<a data-sveltekit-prefetch 
 						class={$page.url.pathname === '/' ? 'link-primary' : ''}
 						 href="/"
 							>Home</a
@@ -55,7 +55,7 @@
 					{#if $username !== "anon"}
 					<li>
 						<a
-							sveltekit:prefetch
+						data-sveltekit-prefetch 
 							class={$page.url.pathname.includes('createnewlisting') ? 'link-primary' : ''}
 							href="/createnewlisting">+ Create new Listing</a
 						>
@@ -63,7 +63,7 @@
 				{/if}
 					<li>
 						<a
-							sveltekit:prefetch
+						data-sveltekit-prefetch
 							class={$page.url.pathname.includes('about') ? 'link-primary' : ''}
 							href="/about">About</a
 						>

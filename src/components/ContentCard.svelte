@@ -10,26 +10,34 @@
 		<h2 class="card-title">
 			<a href={data.externalUrl} class="link link-primary">
 				<p class="overflow-hidden truncate ...">
-				{data.title}
-			</p>
-		</a>
+					{data.title}
+				</p>
+			</a>
 		</h2>
-		<div class="flex items-start justify-start gap-1">
-			<div class=" w-6 h-6 mask mask-star bg-orange-400"></div>
-			<p class="align-middle font-bold"> 4.5 
-			</p>
-		<p class="text-gray-500 flex-grow w-full">
-			(21)
-		</p>
-		<div class="flex gap-1">
-			
-			<p class="text-green-600 font-bold w-fit">
-				{data.price}
-			</p>
-			<p class="text-green-600 font-bold w-fit">
-				丰
-			</p>
-		</div>
+		<div class="flex items-start justify-start gap-2">
+			<div class="flex items-start justify-start gap-1">
+				<div class=" w-6 h-6 mask mask-star bg-orange-400"></div>
+				<p class="align-middle font-bold"> 4.5
+				</p>
+				<p class="text-gray-500 flex-grow w-full">
+					(21)
+				</p>
+			</div>
+			<div>
+				{#if data.type==="service"}
+				<div class="badge badge-primary badge-outline">Service</div>
+				{:else if data.type==="job"}
+				<div class="badge badge-secondary badge-outline">Job</div>
+				{/if}
+			</div>
+			<div class="flex gap-1">
+				<p class="text-green-600 font-bold w-fit">
+					{data.price}
+				</p>
+				<p class="text-green-600 font-bold w-fit">
+					丰
+				</p>
+			</div>
 		</div>
 		<div class="h-32 overflow-auto">
 			<p>{data.description}</p>
@@ -41,7 +49,7 @@
 					{tag}
 				</div>
 				{/each}
-					
+
 			</div>
 		</div>
 		<div class="flex gap-2 mt-4">
@@ -62,14 +70,14 @@
 				<div>
 					<div class="flex items-start justify-start gap-1">
 						<div class=" w-6 h-6 mask mask-star bg-orange-400"></div>
-						<p class="align-middle font-bold text-sm pt-0.5"> 4.5 
+						<p class="align-middle font-bold text-sm pt-0.5"> 4.5
 						</p>
-					<p class="text-gray-500 flex-grow w-full text-sm pt-0.5">
-						(21)
-					</p>
+						<p class="text-gray-500 flex-grow w-full text-sm pt-0.5">
+							(21)
+						</p>
 					</div>
 				</div>
-		</div>
+			</div>
 		</div>
 
 	</div>
